@@ -1,0 +1,115 @@
+#CUSTOM CSS
+    header {visibility: hidden;}
+
+    h1, h2, h3, h4, p, span, label, .stMarkdown {
+        color: #ffffff !important;
+    }
+
+    /*core app bg*/
+    [data-testid="stAppViewContainer"] {
+        background-color: #0d1f14; 
+        background-image: 
+            radial-gradient(ellipse at 80% 20%, rgba(200, 255, 220, 0.15) 0%, transparent 60%),
+            linear-gradient(rgba(46, 126, 88, 0.2) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(46, 126, 88, 0.2) 1px, transparent 1px);
+        background-size: 100% 100%, 40px 40px, 40px 40px;
+        background-position: 0 0, -0.5px -0.5px, -0.5px -0.5px;
+    }
+    
+    /* sidebar panel*/
+    [data-testid="stSidebar"] {
+        background-color: rgba(13, 31, 20, 0.45) !important;
+        backdrop-filter: blur(12px) saturate(160%);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+        border-right: 1px solid rgba(46, 126, 88, 0.3) !important;
+    }
+
+    /*buttons*/
+    .stButton > button {
+        background-color: rgba(15, 23, 42, 0.4) !important; 
+        color: #ffffff !important;
+        border: 1px solid rgba(46, 126, 88, 0.4) !important;
+        border-radius: 8px !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.25s ease;
+    }
+    .stButton > button:hover {
+        background-color: rgba(46, 126, 88, 0.3) !important; 
+        border-color: #fcd34d !important; 
+        color: #fcd34d !important;
+        box-shadow: 0 0 12px rgba(252, 211, 77, 0.2);
+    }
+
+    /*file uploader box*/
+    [data-testid="stFileUploader"] {
+        background-color: rgba(15, 23, 42, 0.35) !important;
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid rgba(46, 126, 88, 0.3);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    [data-testid="stBottom"],
+    [data-testid="stBottomBlockContainer"],
+    .stAppBottomBlock,
+    .stChatFloatingInputContainer {
+        background-color: transparent !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /*chat input field */
+    [data-testid="stChatInput"] {
+        background-color: rgba(15, 23, 42, 0.5) !important; 
+        border: 1px solid rgba(46, 126, 88, 0.4) !important;
+        border-radius: 15px !important;
+        backdrop-filter: blur(16px) saturate(120%);
+        -webkit-backdrop-filter: blur(16px) saturate(120%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    [data-testid="stChatInput"] textarea {
+        color: #ffffff !important;
+    }
+    [data-testid="stChatInputSubmitButton"] {
+        color: #fcd34d !important; 
+    }
+
+    /*response bubble*/
+    .stChatMessage {
+        background-color: rgba(15, 23, 42, 0.45) !important; 
+        color: #ffffff;
+        border-radius: 15px;
+        border: 1px solid rgba(46, 126, 88, 0.35);
+        padding: 1rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /*user message bubble*/
+    .stChatMessage.st-user {
+        background-color: rgba(255, 255, 255, 0.03) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    /*sidebar interacn elems */
+    .history-btn button {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #cbd5e1 !important;
+        padding: 5px 0 !important;
+        text-align: left !important;
+        font-weight: normal !important;
+    }
+    .history-btn button:hover {
+        color: #fcd34d !important; 
+        background-color: transparent !important;
+    }
+    
+    hr {
+        border-color: rgba(46, 126, 88, 0.4) !important;
+    }
