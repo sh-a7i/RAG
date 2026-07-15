@@ -6,7 +6,6 @@ from generation import generate_final_answer
 
 chat_history = []  
 
-
 def ask_question(user_query):
     if chat_history:
         messages = [
@@ -17,14 +16,14 @@ def ask_question(user_query):
         search_query = llm.invoke(messages).content   
     else:
         search_query = user_query
-
     docs = get_retriever().invoke(search_query)
     print(f"Found {len(docs)} relevant documents")
-
+    source_pages = list(set([
+        doc.metadata.get("page_number") for doc in docs if doc.metadata.get("page_number") is not None
+    ]))
+    source_pages.sort()
     answer = generate_final_answer(docs, user_query, chat_history)  
-
     chat_history.append(HumanMessage(content=user_query))
-    chat_history.append(AIMessage(content=answer))
-
+    chat_history.append(AIMessage(content=answer, additional_kwargs={"source_pages": source_pages}))
     print(f"Answer: {answer}")
-    return answer
+    return answer, source_pages #RETURN TUPLE
