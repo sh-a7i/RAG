@@ -1,115 +1,154 @@
-#CUSTOM CSS
-    header {visibility: hidden;}
+h1, h2, h3, h4, p, label, div[data-testid="stMarkdownContainer"] > p {
+    color: #f2ebd9 !important; /* Soft Cream */
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
 
-    h1, h2, h3, h4, p, span, label, .stMarkdown {
-        color: #ffffff !important;
-    }
 
-    /*core app bg*/
-    [data-testid="stAppViewContainer"] {
-        background-color: #0d1f14; 
-        background-image: 
-            radial-gradient(ellipse at 80% 20%, rgba(200, 255, 220, 0.15) 0%, transparent 60%),
-            linear-gradient(rgba(46, 126, 88, 0.2) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(46, 126, 88, 0.2) 1px, transparent 1px);
-        background-size: 100% 100%, 40px 40px, 40px 40px;
-        background-position: 0 0, -0.5px -0.5px, -0.5px -0.5px;
-    }
-    
-    /* sidebar panel*/
-    [data-testid="stSidebar"] {
-        background-color: rgba(13, 31, 20, 0.45) !important;
-        backdrop-filter: blur(12px) saturate(160%);
-        -webkit-backdrop-filter: blur(12px) saturate(160%);
-        border-right: 1px solid rgba(46, 126, 88, 0.3) !important;
-    }
+.material-icons, [data-testid="stIconMaterial"] {
+    color: #f2ebd9 !important;
+}
 
-    /*buttons*/
-    .stButton > button {
-        background-color: rgba(15, 23, 42, 0.4) !important; 
-        color: #ffffff !important;
-        border: 1px solid rgba(46, 126, 88, 0.4) !important;
-        border-radius: 8px !important;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        transition: all 0.25s ease;
-    }
-    .stButton > button:hover {
-        background-color: rgba(46, 126, 88, 0.3) !important; 
-        border-color: #fcd34d !important; 
-        color: #fcd34d !important;
-        box-shadow: 0 0 12px rgba(252, 211, 77, 0.2);
-    }
+/* CORE APPLICATION BACKGROUND */
+[data-testid="stAppViewContainer"] {
+    background-color: #0d1e30;
+    background-image: 
+        radial-gradient(ellipse at 80% 20%, rgba(230, 216, 192, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(30, 65, 100, 0.2) 0%, transparent 60%),
+        linear-gradient(rgba(242, 235, 217, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 235, 217, 0.08) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    background-position: 0 0, 0 0, -0.5px -0.5px, -0.5px -0.5px;
+    background-attachment: fixed;
+}
 
-    /*file uploader box*/
-    [data-testid="stFileUploader"] {
-        background-color: rgba(15, 23, 42, 0.35) !important;
-        border-radius: 10px;
-        padding: 10px;
-        border: 1px solid rgba(46, 126, 88, 0.3);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-    }
-    [data-testid="stBottom"],
-    [data-testid="stBottomBlockContainer"],
-    .stAppBottomBlock,
-    .stChatFloatingInputContainer {
-        background-color: transparent !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
+/*SIDEBAR & HEADERS*/
+[data-testid="stSidebar"] {
+    background-color: rgba(9, 21, 36, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-right: 1px solid rgba(242, 235, 217, 0.15) !important;
+}
 
-    /*chat input field */
-    [data-testid="stChatInput"] {
-        background-color: rgba(15, 23, 42, 0.5) !important; 
-        border: 1px solid rgba(46, 126, 88, 0.4) !important;
-        border-radius: 15px !important;
-        backdrop-filter: blur(16px) saturate(120%);
-        -webkit-backdrop-filter: blur(16px) saturate(120%);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-    [data-testid="stChatInput"] textarea {
-        color: #ffffff !important;
-    }
-    [data-testid="stChatInputSubmitButton"] {
-        color: #fcd34d !important; 
-    }
+/*Top Header Bar*/
+[data-testid="stHeader"] {
+    background-color: rgba(9, 21, 36, 0.4) !important;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid rgba(242, 235, 217, 0.1) !important;
+}
+/*Bottom Chat Area*/
+[data-testid="stBottom"],
+[data-testid="stBottomBlockContainer"],
+.stAppBottomBlock,
+.stChatFloatingInputContainer {
+    background-color: rgba(9, 21, 36, 0.6) !important;
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border-top: 1px solid rgba(242, 235, 217, 0.1) !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2) !important;
+}
 
-    /*response bubble*/
-    .stChatMessage {
-        background-color: rgba(15, 23, 42, 0.45) !important; 
-        color: #ffffff;
-        border-radius: 15px;
-        border: 1px solid rgba(46, 126, 88, 0.35);
-        padding: 1rem;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    /*user message bubble*/
-    .stChatMessage.st-user {
-        background-color: rgba(255, 255, 255, 0.03) !important; 
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
+/*INTERACTIVE ELEMENTS*/
+/* Buttons*/
+.stButton > button {
+    background: linear-gradient(135deg, rgba(22, 50, 80, 0.7), rgba(30, 65, 100, 0.8)) !important; 
+    color: #f2ebd9 !important; 
+    border: 1px solid rgba(242, 235, 217, 0.2) !important;
+    border-radius: 24px !important;
+    padding: 0.5rem 1rem !important;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
 
-    /*sidebar interacn elems */
-    .history-btn button {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: #cbd5e1 !important;
-        padding: 5px 0 !important;
-        text-align: left !important;
-        font-weight: normal !important;
-    }
-    .history-btn button:hover {
-        color: #fcd34d !important; 
-        background-color: transparent !important;
-    }
-    
-    hr {
-        border-color: rgba(46, 126, 88, 0.4) !important;
-    }
+.stButton > button:hover {
+    background: linear-gradient(135deg, rgba(30, 65, 100, 0.9), rgba(45, 90, 130, 0.9)) !important; 
+    border-color: rgba(242, 235, 217, 0.6) !important; 
+    box-shadow: 0 4px 15px rgba(242, 235, 217, 0.15);
+    transform: translateY(-1px);
+}
+
+/* File Uploader Box */
+[data-testid="stFileUploader"] {
+    background-color: rgba(22, 50, 80, 0.4) !important;
+    border-radius: 20px;
+    padding: 15px;
+    border: 1px solid rgba(242, 235, 217, 0.15);
+    backdrop-filter: blur(16px);
+}
+
+/* Main Chat Input Bar */
+[data-testid="stChatInput"] {
+    background-color: rgba(9, 21, 36, 0.75) !important; 
+    border: 1px solid rgba(242, 235, 217, 0.2) !important;
+    border-radius: 30px !important; 
+    backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+}
+
+[data-testid="stChatInput"] textarea {
+    color: #f2ebd9 !important; 
+}
+
+[data-testid="stChatInput"] textarea::placeholder {
+    color: rgba(242, 235, 217, 0.5) !important;
+}
+
+/* Submit arrow*/
+[data-testid="stChatInputSubmitButton"] {
+    color: #f2ebd9 !important; 
+    opacity: 0.8;
+}
+[data-testid="stChatInputSubmitButton"]:hover {
+    opacity: 1;
+}
+
+/*CHAT MESSAGES & EXPANDERS*/
+/* Assistant Message Bubble */
+.stChatMessage {
+    background-color: rgba(22, 50, 80, 0.3) !important; 
+    color: #f2ebd9;
+    border-radius: 20px;
+    border: 1px solid rgba(242, 235, 217, 0.1);
+    padding: 1.2rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+/* User Message Bubble */
+.stChatMessage.st-user {
+    background-color: rgba(242, 235, 217, 0.05) !important; 
+    border: 1px solid rgba(242, 235, 217, 0.15);
+}
+
+/* Expander */
+[data-testid="stExpander"] {
+    background-color: rgba(22, 50, 80, 0.3) !important;
+    border: 1px solid rgba(242, 235, 217, 0.15) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+[data-testid="stExpander"] summary {
+    background-color: transparent !important;
+}
+
+/* Sidebar History Items */
+.history-btn button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: rgba(242, 235, 217, 0.7) !important;
+    padding: 8px 12px !important;
+    text-align: left !important;
+    border-radius: 8px !important;
+}
+.history-btn button:hover {
+    color: #f2ebd9 !important; 
+    background-color: rgba(242, 235, 217, 0.1) !important;
+}
+
+hr {
+    border-color: rgba(242, 235, 217, 0.1) !important;
+}
+

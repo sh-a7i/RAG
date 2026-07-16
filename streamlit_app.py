@@ -84,13 +84,9 @@ def start_new_chat():
 #sidebar
 
 with st.sidebar:
-    st.button("New Chat", on_click=start_new_chat, use_container_width=True)
-    
-    st.divider()
-    
     st.subheader("Documents")
     st.caption(st.session_state.vector_store_status)
-    
+
     with st.expander("Manage Knowledge Base"):
         uploaded_file = st.file_uploader("Upload PDF", type=['pdf'], label_visibility="collapsed")
         if st.button("Process Document", use_container_width=True) and uploaded_file:
