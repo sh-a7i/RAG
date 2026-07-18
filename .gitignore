@@ -17,5 +17,3 @@ multi_modal_rag.py
 temp_ingest/
 debug.py
 
-.streamlit/
-
