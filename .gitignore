@@ -1,0 +1,8 @@
+.env 
+
+debug.py
+multi_modal_rag.py
+db/
+temp_ingest/
+Hybrid_retriever.py
+untrack/

@@ -9,6 +9,46 @@ def generate_final_answer(chunks, query, chat_history=None):
     try:
         all_images = []
 
+        query_lower = query.lower()
+        image_keywords = [
+            "image",
+            "images",
+            "figure",
+            "fig",
+            "diagram",
+            "graph",
+            "chart",
+            "visual",
+            "picture",
+            "illustration"
+        ]
+
+        need_images = any(
+            keyword in query_lower
+            for keyword in image_keywords
+        )
+        need_tables = any(
+            keyword in query_lower
+            for keyword in [
+                "table",
+                "tables",
+                "compare",
+                "comparison",
+                "result",
+                "results",
+                "accuracy",
+                "precision",
+                "recall",
+                "f1",
+                "score",
+                "performance",
+                "statistics",
+                "metric",
+                "metrics",
+                "data"
+            ]
+        )
+
         prompt_text = f"""Based on the following documents, please answer this question: {query}
 
     CONTENT TO ANALYZE:
@@ -23,13 +63,23 @@ def generate_final_answer(chunks, query, chat_history=None):
                 if raw_text:
                     prompt_text += f"TEXT:\n{raw_text}\n\n"
 
-                tables_html = original_data.get("tables_html", [])
-                if tables_html:
-                    prompt_text += "TABLES:\n"
-                    for j, table in enumerate(tables_html):
-                        prompt_text += f"Table {j+1}:\n{table}\n\n"
+                # tables_html = original_data.get("tables_html", [])
+                # if tables_html:
+                #     prompt_text += "TABLES:\n"
+                #     for j, table in enumerate(tables_html):
+                #         prompt_text += f"Table {j+1}:\n{table}\n\n"
 
-                all_images.extend(original_data.get("images_base64", []))
+                if need_tables:
+                    tables_html = original_data.get("tables_html", [])
+                    if tables_html:
+                        prompt_text += "TABLES:\n"
+                        for j, table in enumerate(tables_html):
+                            prompt_text += f"Table {j+1}:\n{table}\n\n"
+
+                if need_images:
+                    all_images.extend(
+                        original_data.get("images_base64", [])
+                    )
 
             prompt_text += "\n"
 
@@ -38,7 +88,7 @@ Please provide a clear, comprehensive answer using the text, tables, and images 
 
 ANSWER:"""
 
-        if all_images:
+        if need_images and all_images:
             llm = ChatGroq(model=VISION_MODEL_NAME, temperature=0)
 
             message_content = [{"type": "text", "text": prompt_text}]

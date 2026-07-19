@@ -6,11 +6,12 @@ import shutil
 from langchain_core.messages import HumanMessage, AIMessage
 from ingestion import partition_document, create_chunks_by_title
 from summarization import summarize_chunks
-from vector_store import add_documents, get_vector_store
+from vector_store import add_documents, get_vector_store, delete_by_source
 from conversational_RAG import ask_question
 import config
 import conversational_RAG
 import base64
+
 
 #PAGE CONFIG
 
@@ -52,13 +53,16 @@ def process_uploaded_file(uploaded_file):
         
         with st.status(f"Ingesting `{uploaded_file.name}`...") as status:
             st.write("Partitioning PDF...")
+
+            delete_by_source(file_path)
+
             elements = partition_document(file_path)
             st.write("Creating chunks...")
             chunks = create_chunks_by_title(elements)
             st.write("Summarizing chunks...")
-            documents = summarize_chunks(chunks)
+            documents = summarize_chunks(chunks, source_file=file_path)
             st.write("Adding to vector store...")
-            add_documents(documents)
+            add_documents(documents, source_file=file_path)
             status.update(label="Ingestion complete!", state="complete")
     
         st.session_state.current_pdf_path = file_path
@@ -95,6 +99,8 @@ with st.sidebar:
         if st.button("Clear Database", use_container_width=True):
             try:
                 shutil.rmtree(config.CHROMA_DIR, ignore_errors=True)
+                from vector_store import get_bm25_retriever
+                get_bm25_retriever(force_rebuild=True)
                 st.session_state.vector_store_status = "No database found"
                 st.session_state.chat_history = []
                 st.rerun()

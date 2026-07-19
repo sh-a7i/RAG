@@ -2,15 +2,16 @@
 import os, shutil
 from ingestion import partition_document, create_chunks_by_title
 from summarization import summarize_chunks
-from vector_store import add_documents
+from vector_store import add_documents, delete_by_source
 from conversational_RAG import ask_question
 
 
 def ingest_document(file_path: str):
+    delete_by_source(file_path)
     elements = partition_document(file_path)
     chunks = create_chunks_by_title(elements)
     documents = summarize_chunks(chunks)
-    add_documents(documents)
+    add_documents(documents, source_file=file_path)
     
     print("Ingestion completed successfully")
 
@@ -34,4 +35,7 @@ if __name__ == "__main__":
         if query.lower() == "quit":
             print("Goodbye!")
             break
-        ask_question(query)
+        answer, source_pages = ask_question(query)
+        print(f"\nAnswer: {answer}")
+        if source_pages:
+            print(f"Sources: page(s) {source_pages}")

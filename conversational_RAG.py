@@ -1,8 +1,9 @@
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_groq import ChatGroq
 from config import LLM_MODEL_NAME
-from vector_store import get_retriever
+from vector_store import get_retriever, get_bm25_retriever
 from generation import generate_final_answer
+from multi_query import multi_query_hybrid_retrieve
 
 chat_history = []  
 
@@ -17,26 +18,26 @@ def ask_question(user_query):
     else:
         search_query = user_query
         
-    docs = get_retriever().invoke(search_query)
-if len(docs) == 0 and chat_history:
-    docs = get_retriever().invoke(user_query)
-    
-    # Safely extract and format page numbers
+    docs = multi_query_hybrid_retrieve(search_query, get_retriever(), get_bm25_retriever())
+
+
+        
     extracted_pages = []
     for doc in docs:
         page_val = doc.metadata.get("page")
         if page_val is None:
             page_val = doc.metadata.get("page_number")
-            
+                
         if page_val is not None:
             extracted_pages.append(int(page_val) + 1)
-            
+                
     source_pages = list(set(extracted_pages))
     source_pages.sort()
-    
+        
     answer = generate_final_answer(docs, user_query, chat_history)  
-    
+        
     chat_history.append(HumanMessage(content=user_query))
     chat_history.append(AIMessage(content=answer, additional_kwargs={"source_pages": source_pages}))
-    
+        
+    print(f"Answer: {answer}")
     return answer, source_pages

@@ -49,7 +49,7 @@ def create_ai_summary(text: str, tables: List[str], images: List[str]):
             for image_base64 in images:
                 message_content.append({
                     "type": "image_url",
-                    "image url": {"url" : f"data:image/jpeg;base64,{image_base64}"}
+                    "image_url": {"url" : f"data:image/jpeg;base64,{image_base64}"}
 
                 })
 
@@ -108,6 +108,7 @@ def summarize_chunks(chunks, source_file: str = None):
         doc = Document(
             page_content = enhanced_content,
             metadata = {
+                "source_file": source_file,
                 "page_number": content_data.get('page_number'), # <-- ADD THIS LINE
                 "original_content" : json.dumps({
                     "raw_text" : content_data['text'],
