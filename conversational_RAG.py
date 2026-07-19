@@ -1,9 +1,10 @@
-from mul_query import multi_query_hybrid_retrieve
+
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_groq import ChatGroq
 from config import LLM_MODEL_NAME
-from vector_store import get_retriever
-from generation import generate_final_answer, get_display_page
+from vector_store import get_retriever, get_bm25_retriever
+from generation import generate_final_answer
+from multi_query import multi_query_hybrid_retrieve
 
 chat_history = []  
 
@@ -19,18 +20,10 @@ def ask_question(user_query):
     else:
         search_query = user_query
         
-   # 2. Retrieve documents using Multi-Query + Hybrid (Vector+BM25) + Reciprocal Rank Fusion
-    retriever = get_retriever()
-    bm25_retriever = get_bm25_retriever()
-    docs = multi_query_hybrid_retrieve(search_query, retriever, bm25_retriever)
-    
-    # 3. Fallback: If no docs found, try again with the raw user query
-    if len(docs) == 0 and chat_history:
-        docs = multi_query_hybrid_retrieve(user_query, retriever, bm25_retriever)
-    
-    print(f"Found {len(docs)} relevant documents (after multi-query + RRF)")
-    
-    # 4. Safely extract and format page numbers
+    docs = multi_query_hybrid_retrieve(search_query, get_retriever(), get_bm25_retriever())
+
+
+        
     extracted_pages = []
     for doc in docs:
         page_val = doc.metadata.get("page")
@@ -38,7 +31,7 @@ def ask_question(user_query):
             page_val = doc.metadata.get("page_number")
         if page_val is not None:
             extracted_pages.append(int(page_val) + 1)
-            
+                
     source_pages = list(set(extracted_pages))
     source_pages.sort()
     

@@ -1,7 +1,4 @@
-from dotenv import load_dotenv
 
-# Load environment variables right at the start!
-load_dotenv()
 from typing import List
 from collections import defaultdict
 from pydantic import BaseModel
@@ -41,34 +38,6 @@ def reciprocal_rank_fusion(chunk_lists, k=60):
     )
     return sorted_chunks
 
-def hybrid_retrieve(query, vector_retriever, bm25_retriever):
-    """One query -> vector results + keyword results -> RRF-fused per-query list."""
-    vector_docs = vector_retriever.invoke(query)
-    keyword_docs = bm25_retriever.invoke(query)
-    fused = reciprocal_rank_fusion([vector_docs, keyword_docs])
-    return [doc for doc, score in fused]
-
-
-def multi_query_hybrid_retrieve(query, vector_retriever, bm25_retriever, num_variations=3, top_k=5):
-    """Full pipeline: query -> variations -> hybrid retrieve each -> final RRF."""
-    print("\n--- Generating Query Variations ---")
-    variations = generate_query_variations(query, num_variations)
-    all_queries = [query] + variations
-
-    for i, q in enumerate(all_queries):
-        print(f"Query {i+1}: {q}")
-
-    print("\n--- Hybrid Retrieving and Fusing Documents ---")
-    per_query_results = [
-        hybrid_retrieve(q, vector_retriever, bm25_retriever)
-        for q in all_queries
-    ]
-
-    final_fused = reciprocal_rank_fusion(per_query_results)
-    final_docs = [doc for doc, score in final_fused[:top_k]]
-
-    print(f"Successfully fused and retrieved top {len(final_docs)} documents!")
-    return final_docs
 
 def multi_query_retrieve(query: str, retriever, num_variations: int = 3, top_k: int = 5):
     """
@@ -92,24 +61,59 @@ def multi_query_retrieve(query: str, retriever, num_variations: int = 3, top_k: 
     print(f"Successfully fused and retrieved top {len(final_docs)} documents!")
     return final_docs
 
-# ==========================================
-# TEST BLOCK
-# ==========================================
-if __name__ == "__main__":
-    # Import your specific retriever here just for testing
-    from vector_store import get_retriever
-    
-    test_query = "What is the main topic of the attention paper?"
-    print(f"Original Test Query: '{test_query}'")
-    
-    try:
-        retriever = get_retriever()
-        docs = multi_query_retrieve(test_query, retriever)
-        
-        print("\n--- Top Retrieved Document Snippet ---")
-        if docs:
-            print(docs[0].page_content[:200] + "...")
-        else:
-            print("No documents were returned.")
-    except Exception as e:
-        print(f"\nAn error occurred during testing: {e}")
+def hybrid_retrieve(query: str, vector_retriever, bm25_retriever):
+    """One query -> vector results + keyword results -> RRF-fused per-query list."""
+    vector_docs = vector_retriever.invoke(query)
+
+    if bm25_retriever is None:
+        keyword_docs = []  # no keyword index built yet, fall back to vector-only
+    else:
+        keyword_docs = bm25_retriever.invoke(query)
+
+    fused = reciprocal_rank_fusion([vector_docs, keyword_docs])
+    return [doc for doc, score in fused]
+
+def multi_query_hybrid_retrieve(query: str, vector_retriever, bm25_retriever, num_variations: int = 3, top_k: int = 5):
+    """
+    Full pipeline: query -> multiple phrasings -> hybrid (vector + BM25)
+    retrieve each -> final RRF across all of them.
+    """
+    print("\n--- Generating Query Variations ---")
+    variations = generate_query_variations(query, num_variations)
+    all_queries = [query] + variations
+
+    for i, q in enumerate(all_queries):
+        print(f"Query {i+1}: {q}")
+
+    print("\n--- Hybrid Retrieving and Fusing Documents ---")
+    per_query_results = [hybrid_retrieve(q, vector_retriever, bm25_retriever) for q in all_queries]
+
+    fused = reciprocal_rank_fusion(per_query_results)
+    final_docs = [doc for doc, score in fused[:top_k]]
+
+    print(f"Successfully fused and retrieved top {len(final_docs)} documents!")
+    return final_docs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
