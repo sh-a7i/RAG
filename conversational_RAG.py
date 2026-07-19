@@ -3,8 +3,7 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_groq import ChatGroq
 from config import LLM_MODEL_NAME
 from vector_store import get_retriever
-from generation import generate_final_answer
-from Hybrid_retriever import get_bm25_retriever
+from generation import generate_final_answer, get_display_page
 
 chat_history = []  
 
@@ -37,7 +36,6 @@ def ask_question(user_query):
         page_val = doc.metadata.get("page")
         if page_val is None:
             page_val = doc.metadata.get("page_number")
-            
         if page_val is not None:
             extracted_pages.append(int(page_val) + 1)
             
