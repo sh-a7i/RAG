@@ -308,7 +308,7 @@ if user_query:
             try:
                 conversational_RAG.chat_history = st.session_state.chat_history
                 
-                answer, source_pages = ask_question(user_query) 
+                answer, source_pages, contexts = ask_question(user_query) 
                 
                 st.session_state.chat_history = conversational_RAG.chat_history
                 st.markdown(answer)
